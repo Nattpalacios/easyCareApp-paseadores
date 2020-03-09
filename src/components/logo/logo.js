@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 
 
 
+
+
 export default class Logo extends Component{
 
     render(){
         return(
-            <div>
-
-            </div>
+                <img className="img img-responsive" src="/img/logo.PNG"></img>
         );
     }
 
