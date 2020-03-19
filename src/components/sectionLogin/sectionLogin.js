@@ -60,8 +60,8 @@ export default class SectionLogin extends Component{
             <div className="col-lg-12">
                 <center>
                     <div className="btnLogin">
-                        <a href="/iniciarSesion">
-                            <button className={"btn btn-outline btn-light btn-block "+this.state.claseBoton}>Iniciar Sesión</button>
+                        <a href="/iniciarSesion" className={this.state.claseBoton}>
+                            <button className={"btn btn-outline btn-light btn-block "}>Iniciar Sesión</button>
                         </a>
                     </div>
                     <div className="btnLogin">
