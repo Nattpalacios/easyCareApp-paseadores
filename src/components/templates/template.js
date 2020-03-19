@@ -20,7 +20,7 @@ export default class Template extends Component{
                     </div>
                 </Route>
 
-                <Route exact path="/registro">
+                <Route exact path="/register">
                     <div className="container">
                         <Register/>
                     </div>         

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import './sectionLogin.css';
 import LoginService from '../../services/loginService';
-import { ACCESS_TOKEN } from '../../constants';
+import { ACCESS_TOKEN } from '../../constants/index';
 
 export default class SectionLogin extends Component{
 

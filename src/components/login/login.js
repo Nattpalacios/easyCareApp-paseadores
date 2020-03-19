@@ -5,7 +5,7 @@ import ModalCargando from '../modalCargandoComponent/modalCargando';
 import LoginService from '../../services/loginService';
 
 import './login.css';
-import { ACCESS_TOKEN } from '../../constants';
+import { ACCESS_TOKEN } from '../../constants/index';
 
 export default class Login extends Component{
 
