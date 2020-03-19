@@ -8,7 +8,9 @@ export default class Logo extends Component{
 
     render(){
         return(
-                <img className="img img-responsive" src="/img/logo.PNG"></img>
+            <div className="col-lg-12">
+                <a href="/"><img className="img img-responsive mx-auto d-block" alt="imagen principal" src="/img/logo.PNG"/></a>
+            </div>
         );
     }
 
