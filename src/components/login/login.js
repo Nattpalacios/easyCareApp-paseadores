@@ -122,7 +122,10 @@ export default class Login extends Component{
                                 <input name="password" required onChange={this.hadleChange} type="password" className="form-control" placeholder="Password"></input>
                             </div>
                             <a href="/register"><h6>¿No tienes una cuenta?</h6></a>
-                            <button className="btn btn-light">Ingresar</button>
+                            <div className="estiloBotonLeft">
+                                <button className="btn btn-outline btn-light">Ingresar</button>
+                            </div>
+                            
                         </div>
                     </form>
                 </div>

@@ -6,3 +6,12 @@
     border-width: 1px;
     border-style: solid;
 }
+
+.estiloBotonLeft{
+    float: left;
+    margin: 3px;
+    margin-top: 15px;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
