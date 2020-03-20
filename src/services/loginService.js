@@ -52,4 +52,22 @@ export default class LoginService{
             incorrect();
         });
     }
+
+    registrar = function(email, password, nombre, cedula, telefono, correct, incorrect) {
+        var init = {
+            method : "POST"
+        };
+
+        fetch(API_BASE_URL_BACK+"/paseadores/register/"+email+"/"+password+"/"+nombre+"/"+cedula+"/"+telefono, init)
+        .then(function(response) {
+            if(response.ok) return response.text();
+            incorrect(response);
+        })
+        .then(function(token) {
+            correct(token);
+        })
+        .catch(function(error) {
+            incorrect(error);
+        })
+    }
 }
