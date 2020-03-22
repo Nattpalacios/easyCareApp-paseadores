@@ -85,7 +85,7 @@ export default class Login extends Component{
         var loginAceptado = function(token) {
             localStorage.setItem(ACCESS_TOKEN, token);
             terminado();
-            window.location="/";
+            window.location="/paseador";
         }
 
         var loginRechazado = function() {

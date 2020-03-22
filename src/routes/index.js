@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from '../components/login/login';
 import Register from '../components/register/register';
 import Home from '../components/home/home';
+import Paseador from '../components/paseador/paseador';
 
 export default ()=>(
 
@@ -12,6 +13,7 @@ export default ()=>(
             <Route path="/" exact component = {Home}/>
             <Route path="/iniciarSesion" exact component = {Login}/>
             <Route path="/register" exact component = {Register}/>
+            <Route path="/paseador" exact component = {Paseador}/>
         </Switch>
     </Router>
 );
