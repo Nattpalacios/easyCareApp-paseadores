@@ -102,7 +102,7 @@ export default class Register extends Component{
                     <div className="container">
                         <form onSubmit={this.registrar}>
                             <div className="form-group">
-                                <input rquired type="email" name="email" onChange={this.hadleChange} className="form-control" placeholder="E-mail"></input>
+                                <input required type="email" name="email" onChange={this.hadleChange} className="form-control" placeholder="E-mail"></input>
                             </div>
                             <div className="form-group">
                                 <input required type="text" name="nombre" onChange={this.hadleChange} className="form-control" placeholder="Nombre"></input>
