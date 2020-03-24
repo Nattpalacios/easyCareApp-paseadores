@@ -4,6 +4,17 @@ import '../../estilos/estiloBoton.css';
 
 export default class Bienvenida extends Component{
 
+    constructor(props){
+        super(props);
+        this.paseadoresClick = this.paseadoresClick.bind(this);
+    }
+
+    paseadoresClick = function(event){
+        event.preventDefault();
+        console.log("hola");
+        window.location = "/paseadores";
+    }
+
     render(){
         return(
             <div className="container">
@@ -21,7 +32,7 @@ export default class Bienvenida extends Component{
                     <div className="col-md-12 col-lg-4">
                         <img alt="ranking" src="/img/ranking.jpg" className="img img-responsive col-lg-12"/>
                         <div className="estiloBoton">
-                            <button className="btn btn-outline btn-light btn-block">Ranking Paseadores</button>
+                            <button onClick = {this.paseadoresClick} className="btn btn-outline btn-light btn-block">Ranking Paseadores</button>
                         </div>
                     </div>
                 </div>

@@ -24,10 +24,13 @@ export default class Login extends Component{
         this.validacionCorrecta = this.validacionCorrecta.bind(this);
         this.validacionIncorrecta = this.validacionIncorrecta.bind(this);
 
-        this.verificarAutenticacion();
+        
 
     }
 
+    componentWillMount = function(){
+        this.verificarAutenticacion();
+    }
 
     verificarAutenticacion = function(e) {
         var servicio = new LoginService();
@@ -58,14 +61,7 @@ export default class Login extends Component{
         });
     }
 
-    iniciarSesion(){
-        this.setState({
-            email : this.state.email,
-            password : this.state.password,
-            cargando : this.state.cargando,
-            sesionIniciada : true
-        });
-    }
+    
 
     handleSubmit = (event) => {
         this.setState({
@@ -83,14 +79,17 @@ export default class Login extends Component{
         var terminado = this.cerrarModal;
 
         var loginAceptado = function(token) {
-            localStorage.setItem(ACCESS_TOKEN, token);
-            terminado();
-            window.location="/paseador";
+            if(token !== undefined){
+                localStorage.setItem(ACCESS_TOKEN, token);
+                terminado();
+                window.location="/paseador";
+            }
         }
 
         var loginRechazado = function() {
             terminado();
             alert("Login no aceptado");
+            window.location="/iniciarSesion";
         }
 
         new LoginService().login(this.state.email,this.state.password,loginAceptado,loginRechazado,miInit);

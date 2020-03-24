@@ -18,8 +18,11 @@ export default class SectionLogin extends Component{
         this.validacionIncorrecta = this.validacionIncorrecta.bind(this);
         this.cerrarSesion = this.cerrarSesion.bind(this);
 
-        this.verificarAutenticacion();
 
+    }
+
+    componentWillMount = function(){
+        this.verificarAutenticacion();
     }
 
     verificarAutenticacion = function(e){
@@ -51,6 +54,7 @@ export default class SectionLogin extends Component{
             localStorage.removeItem(ACCESS_TOKEN);
             this.verificarAutenticacion();
         }
+        window.location.reload();
     }
 
 
