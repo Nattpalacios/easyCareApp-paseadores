@@ -5,6 +5,7 @@ import Login from '../components/login/login';
 import Register from '../components/register/register';
 import Home from '../components/home/home';
 import Paseador from '../components/paseador/paseador';
+import RankingPaseadores from '../components/rankingPaseadores/rankingPaseadores';
 
 export default ()=>(
 
@@ -14,6 +15,7 @@ export default ()=>(
             <Route path="/iniciarSesion" exact component = {Login}/>
             <Route path="/register" exact component = {Register}/>
             <Route path="/paseador" exact component = {Paseador}/>
+            <Route path="/paseadores" exact component = {RankingPaseadores}/>
         </Switch>
     </Router>
 );

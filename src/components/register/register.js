@@ -28,8 +28,11 @@ export default class Register extends Component{
         this.registroCorrecto = this.registroCorrecto.bind(this);
         this.registroIncorrecto = this.registroIncorrecto.bind(this);
 
-        this.verificarAutenticacion();
 
+    }
+
+    componentWillMount = function(){
+        this.verificarAutenticacion();
     }
 
     hadleChange(event){
