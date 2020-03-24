@@ -79,9 +79,11 @@ export default class Login extends Component{
         var terminado = this.cerrarModal;
 
         var loginAceptado = function(token) {
-            localStorage.setItem(ACCESS_TOKEN, token);
-            terminado();
-            window.location="/paseador";
+            if(token !== undefined){
+                localStorage.setItem(ACCESS_TOKEN, token);
+                terminado();
+                window.location="/paseador";
+            }
         }
 
         var loginRechazado = function() {
