@@ -1,0 +1,41 @@
+
+#form {
+    width: 250px;
+    margin: 0 auto;
+    height: 50px;
+  }
+  
+  #form p {
+    text-align: center;
+  }
+  
+  #form label {
+    font-size: 20px;
+  }
+  
+  .estrellaRanking {
+    display: none;
+  }
+  
+  label {
+    color: grey;
+  }
+  
+  .clasificacion {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    font-size: 25px;
+  }
+  
+  .seleccionable:hover,
+  .seleccionable:hover ~ label {
+    color: orange;
+  }
+  
+  .seleccionable:checked ~ label {
+    color: orange;
+  }
+
+  .seleccionado{
+      color : orange;
+  }

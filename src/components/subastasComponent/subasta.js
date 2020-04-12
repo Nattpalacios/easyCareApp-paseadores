@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import WebSocket from '../../services/webSocket';
 import RequestService from '../../services/requestService';
 
+import Subasta from '../subastaComponent/subasta';
+
 import './subasta.css';
 
 export default class Subastas extends Component{
@@ -13,7 +15,10 @@ export default class Subastas extends Component{
         this.state = {
             subastas : [],
             stomp : null,
-            socket : null
+            socket : null,
+            flag : 'subastas',
+            subastaSeleccionada : null,
+            iam : null
         };
 
         this.volverMenu = this.volverMenu.bind(this);
@@ -23,6 +28,12 @@ export default class Subastas extends Component{
         this.conectar = this.conectar.bind(this);
         this.agregarSubasta = this.agregarSubasta.bind(this);
         this.eliminarSubasta = this.eliminarSubasta.bind(this);
+        this.seleccionarSubasta = this.seleccionarSubasta.bind(this);
+        this.goBackSubastas = this.goBackSubastas.bind(this);
+        this.quienSoy = this.quienSoy.bind(this);
+        this.quienSoyCorrecto = this.quienSoyCorrecto.bind(this);
+        this.quienSoyIncorrecto = this.quienSoyIncorrecto.bind(this);
+        // this.traerPaseadores = this.traerPaseadores.bind(this);
     }
 
 
@@ -68,6 +79,8 @@ export default class Subastas extends Component{
         });
     }
 
+    //Traer subastas
+
     llamarSubastas = function(){
         var request = new RequestService();
         request.request(this.llamarSubastasCorrecto, this.llamarSubastasIncorrecto, 'GET', '/subastas/iniciadas');
@@ -84,7 +97,45 @@ export default class Subastas extends Component{
 
     }
 
+    //FIN TRAER SUBASTAS
+
+    //QUIEN SOY
+
+    quienSoy = function(){
+        var request = new RequestService();
+        request.request(this.quienSoyCorrecto, this.quienSoyIncorrecto, 'GET','/paseadores/whoami');
+    }
+
+    quienSoyCorrecto = function(data){
+        console.log(data);
+        this.setState({
+            iam : data
+        });
+    }
+
+    quienSoyIncorrecto = function(error){
+
+    }
+
+    //FIN QUIEN SOY
+
+    seleccionarSubasta = function(subasta){
+        this.setState({
+            subastaSeleccionada : subasta,
+            flag : 'subasta'
+        });
+    }
+
+    goBackSubastas(){
+        this.setState({
+            flag : 'subastas'
+        });
+    }
+
+
+
     componentWillMount(){
+        this.quienSoy();
         this.llamarSubastas();
         var webSocket = new WebSocket();
         this.setState({
@@ -95,6 +146,13 @@ export default class Subastas extends Component{
 
 
     render(){
+        if(this.state.flag === 'subasta'){
+            return <Subasta 
+            subasta = {this.state.subastaSeleccionada}
+            volver = {this.goBackSubastas}
+            iam = {this.state.iam}
+             />;
+        }
         return <React.Fragment>
             <hr/>
             <div className='container'>
@@ -111,7 +169,7 @@ export default class Subastas extends Component{
                 <tbody>
                     {this.state.subastas.map((subasta,id)=>{
                         return(
-                            <tr className="clickeable" key={id}>
+                            <tr onClick={() => this.seleccionarSubasta(subasta)} className="clickeable" key={id}>
                                 <td>{subasta.id}</td>
                                 <td>{subasta.creador}</td>
                                 <td>{subasta.numMascotas}</td>
