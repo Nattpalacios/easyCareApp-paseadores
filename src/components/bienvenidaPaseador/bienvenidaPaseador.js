@@ -44,7 +44,6 @@ export default class Bienvenida extends Component{
                         <center>
                             <h4>¡Bienvenido, paseador!</h4>
                         </center>
-                        <h4></h4>
                         <img alt="ranking" src="/img/ranking.jpg" className="img img-responsive col-lg-12"/>
                         <div className="estiloBoton">
                             <button onClick = {this.paseadoresClick} className="btn btn-outline btn-light btn-block">Ranking Paseadores</button>
