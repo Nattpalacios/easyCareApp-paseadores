@@ -7,6 +7,8 @@ import { formatterPeso } from '../../formatos/money';
 
 import EstrellasRanking from '../estrellasRankingComponent/estrellasRanking';
 
+import './subasta.css';
+
 export default class Subasta extends Component{
 
     constructor(props){
@@ -15,7 +17,8 @@ export default class Subasta extends Component{
             socket : null,
             stomp : null,
             paseadores : [],
-            ofertas : []
+            ofertas : [],
+            oferta : 0
         };
         this.volverSubastas = this.volverSubastas.bind(this);
         this.conectar = this.conectar.bind(this);
@@ -23,6 +26,12 @@ export default class Subasta extends Component{
         this.traerPaseadoresIncorrecto = this.traerPaseadoresIncorrecto.bind(this);
         this.agregarPaseador = this.agregarPaseador.bind(this);
         this.eliminarPaseador = this.eliminarPaseador.bind(this);
+        this.agregarOferta = this.agregarOferta.bind(this);
+        this.change = this.change.bind(this);
+        this.ofertar = this.ofertar.bind(this);
+        this.traerOfertas = this.traerOfertas.bind(this);
+        this.traerOfertasCorrecto = this.traerOfertasCorrecto.bind(this);
+        this.traerOfertasIncorrecto = this.traerOfertasIncorrecto.bind(this);
     }
 
     
@@ -39,6 +48,7 @@ export default class Subasta extends Component{
     }
 
     traerPaseadoresCorrecto = function(data){
+        console.log(data);
         this.setState({
             paseadores : data
         });
@@ -49,6 +59,35 @@ export default class Subasta extends Component{
     }
 
     //FIN TRAER PASEADORES
+
+    //TRAER OFERTAS
+
+    traerOfertas = function(){
+        var request = new RequestService();
+        request.request(this.traerOfertasCorrecto, this.traerOfertasIncorrecto, 'GET', '/subastas/'+this.props.subasta.id+'/ofertas');
+    }
+
+    traerOfertasCorrecto = function(data){
+        console.log(data);
+        this.setState({
+            ofertas : []
+        });
+        var ag = this.agregarOferta;
+        data.forEach((dato) => {
+            var of = {
+                ofertor : dato.paseador,
+                oferta : dato.oferta
+            };
+            this.agregarOferta(of);
+        });        
+    }
+
+    traerOfertasIncorrecto = function(error){
+        console.log(error);
+        console.error(error);
+    }
+
+    //FIN TRAER OFERTAS
 
     agregarPaseador = function(paseador){
         var arr = this.state.paseadores;
@@ -70,6 +109,23 @@ export default class Subasta extends Component{
         });
     }
 
+    agregarOferta = function(oferta){
+        var arr = this.state.ofertas;
+        console.log(this.state.ofertas);
+        console.log(oferta);
+        arr.push(oferta);
+        this.setState({
+            ofertas : arr
+        });
+        
+    }
+
+    change = function(event){
+        this.setState({
+            [event.target.name] : event.target.value
+        });
+    }
+
     conectar = function(ws){
         this.setState({
             stomp : ws
@@ -78,14 +134,18 @@ export default class Subasta extends Component{
         var agregarP = this.agregarPaseador;
         var elim = this.eliminarPaseador;
         var yo = this.props.iam;
+        var agof = this.agregarOferta;
         this.state.stomp.subscribe('/topic/subasta.'+this.props.subasta.id, function(eventbody){
             console.log(eventbody)
             var object = JSON.parse(eventbody.body);
             console.log(yo.correo + " " + object.correo);
             console.log(object.correo != yo.correo);
-            agregarP(object);         
+            if(object.correo != yo.correo){
+                agregarP(object);
+            }            
         });
         this.traerPaseadores();
+        this.traerOfertas();
         this.state.stomp.subscribe('/topic/cerrar/subasta.'+this.props.subasta.id,function(eventbody){
             var object = JSON.parse(eventbody.body);
             volver();
@@ -94,11 +154,25 @@ export default class Subasta extends Component{
             var object = JSON.parse(eventbody.body);
             elim(object);
         });
+        this.state.stomp.subscribe("/topic/agregaroferta/subasta."+this.props.subasta.id,function(eventbody){
+            var object = JSON.parse(eventbody.body);
+            agof(object);
+        });
         console.log(this.state.iam);
         this.state.stomp.send("/app/subasta."+this.props.subasta.id,{},JSON.stringify(this.props.iam));
     }
 
+    ofertar = function(){
+        var datos = {
+            oferta : this.state.oferta,
+            ofertor : this.props.iam,
+            subasta : this.props.subasta
+        };
+        this.state.stomp.send("/app/agregaroferta/subasta."+this.props.subasta.id,{},JSON.stringify(datos));
+    }
+
     componentWillMount(){
+        this.traerOfertas();
         var webSocket = new WebSocket();
         this.setState({
             socket : webSocket
@@ -125,13 +199,22 @@ export default class Subasta extends Component{
                                 })}
                             </center>
                         </div>
-                        <div className='col-md-6 col-sm-12 eventosSection'>
-                            <div className='col-sm-12 eventoSection'>
-                                <span className="badge badge-success">Andres Gualdron</span> OFRECIÓ <b><i>{formatterPeso.format(50000)} </i></b>
-                                <EstrellasRanking soloLectura={true} puntaje={3}/>
-                            </div>
+                        <div className='col-md-6 col-sm-12'>
+                            <div className='eventosSection'>
+                                <div className='col-sm-12 eventoSection'>
+                                    {this.state.ofertas.map((subasta, id) => {
+                                        return (
+                                            <React.Fragment key={id}>
+                                                <span className="badge badge-success">{subasta.ofertor.nombre}</span> OFRECIÓ <b><i>{formatterPeso.format(subasta.oferta)} </i></b>
+                                                <EstrellasRanking soloLectura={true} puntaje={subasta.ofertor.calificacion}/>
+                                            </React.Fragment>
+                                        );
+                                    })}
+                                    
+                                </div>
+                            </div>                            
                             <div className='input-group'>
-                                <input className='form-control' type='number' placeholder='Oferta' /> <button className='btn btn-success form-control'>Ofertar</button>
+                                <input name='oferta' onChange={this.change} className='form-control' type='number' placeholder='Oferta' /> <button onClick={this.ofertar} className='btn btn-success form-control'>Ofertar</button>
                             </div>
                         </div>
                     </div>

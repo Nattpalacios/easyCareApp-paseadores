@@ -26,12 +26,15 @@ export default class RequestService{
 
         fetch(API_BASE_URL_BACK+path, init)
         .then(function(response){
+            console.log(response);
             return response.json()
         })
         .then(function(data){
             correcto(data);
+            console.log(data);
         }).catch(function(error){
             console.log("error");
+            console.error(error);
             incorrecto(error);
         })
         

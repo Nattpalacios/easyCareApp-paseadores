@@ -1,0 +1,19 @@
+.paseadoresSection, .eventosSection{
+    overflow: scroll;
+    height: 550px;
+    overflow-x: hidden;
+}
+
+.paseadoresSection::-webkit-scrollbar, .eventosSection::-webkit-scrollbar{
+    background: rgb(184, 181, 181);
+    width: 7px;
+    border-radius: 50px;
+}
+
+.paseadoresSection::-webkit-scrollbar-thumb, .eventosSection::-webkit-scrollbar-thumb{
+    background: rgb(113, 111, 111);
+}
+
+.eventoSection{
+    margin: 10px;
+}
