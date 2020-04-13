@@ -91,7 +91,9 @@ export default class RankingPaseadores extends Component{
         return (
             <React.Fragment>
                 <div className="container">
-                    <button className='btn btn-info' onClick={this.volverMenu}> Volver al menu</button>
+                    <h6>   </h6>
+                    <button className='btn btn-info' onClick={this.volverMenu}> Volver al menú</button><br/>
+                    <h6>   </h6>
                     <table className="table table-hover">
                         <thead>
                         <tr>

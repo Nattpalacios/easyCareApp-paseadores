@@ -1,0 +1,13 @@
+.izquierda{
+    margin-left : 5%;
+}
+
+.centro{
+    float: center;
+    margin-left : 5%;
+    margin-top : 10%;
+}
+
+.derecha{
+    margin-top : 30%;
+}

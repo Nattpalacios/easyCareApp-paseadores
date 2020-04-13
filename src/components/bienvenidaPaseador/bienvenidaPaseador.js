@@ -4,6 +4,7 @@ import Subasta from '../subastasComponent/subasta';
 
 import '../../estilos/estiloBoton.css';
 import RankingPaseadores from '../rankingPaseadores/rankingPaseadores';
+import PerfilPaseador from '../perfilPaseador/perfilPaseador';
 
 export default class Bienvenida extends Component{
 
@@ -37,13 +38,16 @@ export default class Bienvenida extends Component{
         if(this.state.flag === 'ranking'){
             return <RankingPaseadores setFlag={this.setFlag} />
         }
+        if(this.state.flag === 'perfil'){
+            return <PerfilPaseador setFlag={this.setFlag} />
+        }
         return(
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 col-lg-4">
                         <img alt="perfil" src="/img/perfil.jpg" className="img img-responsive col-lg-12" />
                         <div className="estiloBoton">
-                            <button className="btn btn-outline btn-light btn-block">Perfil</button>
+                            <button onClick={() => this.setFlag("perfil")} className="btn btn-outline btn-light btn-block">Perfil</button>
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-4">

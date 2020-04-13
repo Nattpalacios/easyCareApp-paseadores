@@ -156,7 +156,7 @@ export default class Subastas extends Component{
         return <React.Fragment>
             <hr/>
             <div className='container'>
-            <button className='btn btn-info' onClick={this.volverMenu}> Volver al menu</button>
+            <button className='btn btn-info' onClick={this.volverMenu}> Volver al menú</button>
             <table className="table table-hover">
                 <thead>
                 <tr>
