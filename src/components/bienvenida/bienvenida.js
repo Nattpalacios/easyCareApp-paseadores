@@ -1,13 +1,52 @@
 import React, {Component} from 'react';
 
 import '../../estilos/estiloBoton.css';
+import './bienvenida.css';
+import LoginService from '../../services/loginService';
 
 export default class Bienvenida extends Component{
 
     constructor(props){
         super(props);
+        this.state = {
+            claseBoton : "oculto"
+        }
         this.paseadoresClick = this.paseadoresClick.bind(this);
+
+        this.verificarAutenticacion = this.verificarAutenticacion.bind(this);
+        this.validacionCorrecta = this.validacionCorrecta.bind(this);
+        this.validacionIncorrecta = this.validacionIncorrecta.bind(this);
     }
+
+    componentWillMount = function(){
+        this.verificarAutenticacion();
+    }
+
+    //Verificar login
+
+    hadleChange(event){
+        this.setState({
+            [event.target.name] : event.target.value
+        });
+    }
+
+    verificarAutenticacion = function(e){
+        var servicio = new LoginService();
+        servicio.validate(this.validacionCorrecta,this.validacionIncorrecta);
+    }
+
+    validacionCorrecta = function(){
+        console.log("validacion correcta "+this);
+        this.setState({
+            claseBoton : ""
+        });
+    }
+
+    validacionIncorrecta = function(){
+        
+    }
+
+    //Fin verificar login
 
     paseadoresClick = function(event){
         event.preventDefault();
@@ -35,6 +74,11 @@ export default class Bienvenida extends Component{
                             <button onClick = {this.paseadoresClick} className="btn btn-outline btn-light btn-block">Ranking Paseadores</button>
                         </div>
                     </div>
+                </div>
+                <div className="row">
+                    <a href="/paseador" className={this.state.claseBoton}>
+                        <button className="btn btn-info">Ir a Menú Paseador</button>
+                    </a>
                 </div>
             </div>
         );

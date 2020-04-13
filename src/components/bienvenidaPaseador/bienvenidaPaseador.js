@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Subasta from '../subastasComponent/subasta';
 
 import '../../estilos/estiloBoton.css';
+import RankingPaseadores from '../rankingPaseadores/rankingPaseadores';
 
 export default class Bienvenida extends Component{
 
@@ -21,6 +22,8 @@ export default class Bienvenida extends Component{
         window.location = "/paseadores";
     }
 
+
+
     setFlag = function(f){
         this.setState({
             flag : f
@@ -31,13 +34,16 @@ export default class Bienvenida extends Component{
         if(this.state.flag === 'subastas'){
             return <Subasta setFlag={this.setFlag} />
         }
+        if(this.state.flag === 'ranking'){
+            return <RankingPaseadores setFlag={this.setFlag} />
+        }
         return(
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 col-lg-4">
                         <img alt="perfil" src="/img/perfil.jpg" className="img img-responsive col-lg-12" />
                         <div className="estiloBoton">
-                            <button className="btn btn-outline btn-light btn-block">Ir al perfil</button>
+                            <button className="btn btn-outline btn-light btn-block">Perfil</button>
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-4">
@@ -46,7 +52,7 @@ export default class Bienvenida extends Component{
                         </center>
                         <img alt="ranking" src="/img/ranking.jpg" className="img img-responsive col-lg-12"/>
                         <div className="estiloBoton">
-                            <button onClick = {this.paseadoresClick} className="btn btn-outline btn-light btn-block">Ranking Paseadores</button>
+                            <button onClick = {() => this.setFlag("ranking")} className="btn btn-outline btn-light btn-block">Ranking Paseadores</button>
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-4">

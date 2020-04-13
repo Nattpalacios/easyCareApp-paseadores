@@ -6,12 +6,13 @@ import Header from '../header/header';
 
 export default class RankingPaseadores extends Component{
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             paseadores : []
         }
 
+        this.volverMenu = this.volverMenu.bind(this);
         this.verificarAutenticacion = this.verificarAutenticacion.bind(this);
         this.validacionCorrecta = this.validacionCorrecta.bind(this);
         this.validacionIncorrecta = this.validacionIncorrecta.bind(this);
@@ -56,6 +57,10 @@ export default class RankingPaseadores extends Component{
 
     //Fin verificar login
 
+    volverMenu = function(){
+        this.props.setFlag('bienvenida');
+    }
+
     //PEDIR PASEADORES
 
     obtenerPaseadores = function(){
@@ -78,10 +83,15 @@ export default class RankingPaseadores extends Component{
 
 
     render(){
+        if(this.state.flag === 'ranking'){
+            return <RankingPaseadores 
+             />;
+        }
+
         return (
             <React.Fragment>
-                <Header/>
                 <div className="container">
+                    <button className='btn btn-info' onClick={this.volverMenu}> Volver al menu</button>
                     <table className="table table-hover">
                         <thead>
                         <tr>
