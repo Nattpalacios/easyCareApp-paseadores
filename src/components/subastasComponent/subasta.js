@@ -4,6 +4,7 @@ import WebSocket from '../../services/webSocket';
 import RequestService from '../../services/requestService';
 
 import Subasta from '../subastaComponent/subasta';
+import PrePaseoEnCurso from '../prePaseoEnCursoComponent/prePaseoEnCurso';
 
 import './subasta.css';
 
@@ -18,7 +19,9 @@ export default class Subastas extends Component{
             socket : null,
             flag : 'subastas',
             subastaSeleccionada : null,
-            iam : null
+            iam : null,
+            latCliente : 0,
+            lngCliente : 0
         };
 
         this.volverMenu = this.volverMenu.bind(this);
@@ -33,7 +36,23 @@ export default class Subastas extends Component{
         this.quienSoy = this.quienSoy.bind(this);
         this.quienSoyCorrecto = this.quienSoyCorrecto.bind(this);
         this.quienSoyIncorrecto = this.quienSoyIncorrecto.bind(this);
+        this.setFlag = this.setFlag.bind(this);
+        this.pedirLocation = this.pedirLocation.bind(this);
+        this.setLocationCliente = this.setLocationCliente.bind(this);
         // this.traerPaseadores = this.traerPaseadores.bind(this);
+    }
+
+    setLocationCliente = function(lat, lng){
+        this.setState({
+            latCliente : lat,
+            lngCliente : lng
+        });
+    }
+
+    setFlag(fl){
+        this.setState({
+            flag : fl
+        });
     }
 
 
@@ -132,9 +151,33 @@ export default class Subastas extends Component{
         });
     }
 
+    //LOCALIZAR
+    pedirLocation = function(){
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                console.log(position);
+                this.setState({
+                    miLat : position.coords.latitude,
+                    miLng : position.coords.longitude,
+                    permisoLocation : true,
+                    precision : position.coords.accuracy
+                });
+            },
+            error => {
+                alert("Se necesitan permisos de Location.");
+                console.error(error);
+                console.log("paila");
+            }
+        );
+
+    }
+
+    //FIN LOCALIZAR
+
 
 
     componentWillMount(){
+        this.pedirLocation();
         this.quienSoy();
         this.llamarSubastas();
         var webSocket = new WebSocket();
@@ -151,7 +194,20 @@ export default class Subastas extends Component{
             subasta = {this.state.subastaSeleccionada}
             volver = {this.goBackSubastas}
             iam = {this.state.iam}
+            setFlag = {this.setFlag}
+            setLocationCliente = {this.setLocationCliente}
              />;
+        }else if(this.state.flag === 'prePaseoEnCurso'){
+            return (
+                <PrePaseoEnCurso 
+                lat = {this.state.miLat}
+                lng = {this.state.miLng}
+                subasta = {this.state.subastaSeleccionada}
+                iam = {this.state.iam}
+                latCliente = {this.state.latCliente}
+                lngCliente = {this.state.lngCliente}
+                />
+            );
         }
         return <React.Fragment>
             <hr/>
@@ -171,7 +227,7 @@ export default class Subastas extends Component{
                         return(
                             <tr onClick={() => this.seleccionarSubasta(subasta)} className="clickeable" key={id}>
                                 <td>{subasta.id}</td>
-                                <td>{subasta.creador}</td>
+                                <td>{subasta.creador.nombre}</td>
                                 <td>{subasta.numMascotas}</td>
                                 <td>{(subasta.permitirMasMascotas) ? ("Permitido") : ("No permitido")}</td>
                             </tr>

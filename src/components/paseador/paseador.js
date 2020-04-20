@@ -45,10 +45,13 @@ export default class Paseador extends Component{
 
     render(){
         return(
-            <div className="container-fluid">
-                <Header/>
+            <React.Fragment>
+                <div className="container">
+                    <Header/>
+                </div>                
                 <BienvenidaPaseador/>
-            </div>
+            </React.Fragment>
+                
         );
     }
 }

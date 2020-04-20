@@ -7,17 +7,17 @@ export default class Header extends Component{
 
     render(){
         return(
-            <div className="container">
+            <React.Fragment>
                 <div className="row">
-                    <div className="col-lg-6">
+                    <div className="col-lg-6 col-md-12">
                         <Logo/>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-6 col-md-12">
                         <SectionLogin/>
                     </div>
                 </div>
+            </React.Fragment>
                 
-            </div>
         );
     }
 }

@@ -18,7 +18,7 @@ export default class Subasta extends Component{
             stomp : null,
             paseadores : [],
             ofertas : [],
-            oferta : 0
+            oferta : 0,
         };
         this.volverSubastas = this.volverSubastas.bind(this);
         this.conectar = this.conectar.bind(this);
@@ -32,6 +32,7 @@ export default class Subasta extends Component{
         this.traerOfertas = this.traerOfertas.bind(this);
         this.traerOfertasCorrecto = this.traerOfertasCorrecto.bind(this);
         this.traerOfertasIncorrecto = this.traerOfertasIncorrecto.bind(this);
+        
     }
 
     
@@ -66,6 +67,8 @@ export default class Subasta extends Component{
         var request = new RequestService();
         request.request(this.traerOfertasCorrecto, this.traerOfertasIncorrecto, 'GET', '/subastas/'+this.props.subasta.id+'/ofertas');
     }
+
+    
 
     traerOfertasCorrecto = function(data){
         console.log(data);
@@ -135,6 +138,8 @@ export default class Subasta extends Component{
         var elim = this.eliminarPaseador;
         var yo = this.props.iam;
         var agof = this.agregarOferta;
+        var cambiarFlag = this.props.setFlag;
+        var slcaseador = this.props.setLocationCliente;
         this.state.stomp.subscribe('/topic/subasta.'+this.props.subasta.id, function(eventbody){
             console.log(eventbody)
             var object = JSON.parse(eventbody.body);
@@ -148,6 +153,7 @@ export default class Subasta extends Component{
         this.traerOfertas();
         this.state.stomp.subscribe('/topic/cerrar/subasta.'+this.props.subasta.id,function(eventbody){
             var object = JSON.parse(eventbody.body);
+            console.log(object);
             volver();
         });
         this.state.stomp.subscribe("/topic/eliminarpaseador/subasta."+this.props.subasta.id, function(eventbody){
@@ -157,6 +163,18 @@ export default class Subasta extends Component{
         this.state.stomp.subscribe("/topic/agregaroferta/subasta."+this.props.subasta.id,function(eventbody){
             var object = JSON.parse(eventbody.body);
             agof(object);
+        });
+        this.state.stomp.subscribe("/topic/decisionSubasta/"+this.props.iam.correo, function(eventbody){
+            var object = JSON.parse(eventbody.body);
+            console.log(eventbody);
+            if(object.seleccionado){
+                console.log("me seleccionaron");
+                slcaseador(object.lat, object.lng)
+                cambiarFlag("prePaseoEnCurso");
+            }else{
+                console.log("no me seleccionaron");
+                volver();
+            }
         });
         console.log(this.state.iam);
         this.state.stomp.send("/app/subasta."+this.props.subasta.id,{},JSON.stringify(this.props.iam));
@@ -184,10 +202,23 @@ export default class Subasta extends Component{
     render(){
         return (
             <React.Fragment>
-                <div className='container'>
-                    <button onClick={this.volverSubastas} className='btn btn-danger'>Volver</button>
+                <div className='container-fluid'>
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <button onClick={this.volverSubastas} className='btn btn-danger btn-lg'>Volver</button>
+                        </div>
+                        <div className="col-lg-12">
+                            <ul className="list-group list-group-horizontal">
+                                <li className="list-group-item">Mascotas para pasear: {this.props.subasta.numMascotas}</li>
+                                <li className="list-group-item">Cliente: {this.props.subasta.creador.nombre}</li>
+                                <li className="list-group-item">El cliente {(this.props.subasta.permitirMasMascotas) ? (" Permite pasear mas mascotas") : (" No permite pasear otras mascotas")}</li>
+                                <li className="list-group-item">Telefono del cliente: {this.props.subasta.creador.telefono}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr></hr>
                     <div className='row justify-content-center'>
-                        <div className='col-md-6 col-sm-12 paseadoresSection'>
+                        <div className='col-md-6 col-sm-12 paseadoresSectionPa'>
                             <center>
                                 {this.state.paseadores.map((paseador, id) => {
                                     return(
@@ -199,23 +230,21 @@ export default class Subasta extends Component{
                                 })}
                             </center>
                         </div>
-                        <div className='col-md-6 col-sm-12'>
-                            <div className='eventosSection'>
-                                <div className='col-sm-12 eventoSection'>
-                                    {this.state.ofertas.map((subasta, id) => {
-                                        return (
-                                            <React.Fragment key={id}>
-                                                <span className="badge badge-success">{subasta.ofertor.nombre}</span> OFRECIÓ <b><i>{formatterPeso.format(subasta.oferta)} </i></b>
-                                                <EstrellasRanking soloLectura={true} puntaje={subasta.ofertor.calificacion}/>
-                                            </React.Fragment>
-                                        );
-                                    })}
-                                    
-                                </div>
-                            </div>                            
-                            <div className='input-group'>
-                                <input name='oferta' onChange={this.change} className='form-control' type='number' placeholder='Oferta' /> <button onClick={this.ofertar} className='btn btn-success form-control'>Ofertar</button>
+                        <div className='col-md-6 col-sm-12 eventosSectionPa'>
+                            <div className='eventoSection'>
+                                {this.state.ofertas.map((subasta, id) => {
+                                    return (
+                                        <React.Fragment key={id}>
+                                            <span className="badge badge-success">{subasta.ofertor.nombre}</span> OFRECIÓ <b><i>{formatterPeso.format(subasta.oferta)} </i></b>
+                                            <EstrellasRanking soloLectura={true} puntaje={subasta.ofertor.calificacion}/>
+                                        </React.Fragment>
+                                    );
+                                })}
+                                
                             </div>
+                        </div>
+                        <div className='input-group'>
+                            <input name='oferta' onChange={this.change} className='form-control' type='number' placeholder='Oferta' /> <button onClick={this.ofertar} className='btn btn-success form-control'>Ofertar</button>
                         </div>
                     </div>
                 </div>

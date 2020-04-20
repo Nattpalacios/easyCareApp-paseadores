@@ -1,16 +1,17 @@
-.paseadoresSection, .eventosSection{
+.paseadoresSectionPa, .eventosSectionPa{
     overflow: scroll;
     height: 550px;
     overflow-x: hidden;
+    margin-top: 2px;
 }
 
-.paseadoresSection::-webkit-scrollbar, .eventosSection::-webkit-scrollbar{
+.paseadoresSectionPa::-webkit-scrollbar, .eventosSectionPa::-webkit-scrollbar{
     background: rgb(184, 181, 181);
     width: 7px;
     border-radius: 50px;
 }
 
-.paseadoresSection::-webkit-scrollbar-thumb, .eventosSection::-webkit-scrollbar-thumb{
+.paseadoresSectionPa::-webkit-scrollbar-thumb, .eventosSectionPa::-webkit-scrollbar-thumb{
     background: rgb(113, 111, 111);
 }
 
