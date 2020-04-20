@@ -39,7 +39,36 @@ export default class Subastas extends Component{
         this.setFlag = this.setFlag.bind(this);
         this.pedirLocation = this.pedirLocation.bind(this);
         this.setLocationCliente = this.setLocationCliente.bind(this);
-        // this.traerPaseadores = this.traerPaseadores.bind(this);
+        this.actualizarUbicacion = this.actualizarUbicacion.bind(this);
+        this.setUbicacionCliente = this.setUbicacionCliente.bind(this);
+    }
+
+    setUbicacionCliente = function(lat, lng){
+        this.setState({
+            latCliente : lat,
+            lngCliente : lng
+        });
+    }
+
+    actualizarUbicacion = function(){
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                console.log(position);
+                if(this.state.miLat !== position.coords.latitude || this.state.miLng!== position.coords.longitude ){
+                    this.setState({
+                        miLat : position.coords.latitude,
+                        miLng : position.coords.longitude,
+                        precision : position.coords.accuracy
+                    });
+                }
+                
+            },
+            error => {
+                alert("Se necesitan permisos de Location.");
+                console.error(error);
+                console.log("paila");
+            }
+        );
     }
 
     setLocationCliente = function(lat, lng){
@@ -196,6 +225,9 @@ export default class Subastas extends Component{
             iam = {this.state.iam}
             setFlag = {this.setFlag}
             setLocationCliente = {this.setLocationCliente}
+            lat = {this.state.miLat}
+            lng = {this.state.miLng}
+            
              />;
         }else if(this.state.flag === 'prePaseoEnCurso'){
             return (
@@ -206,6 +238,8 @@ export default class Subastas extends Component{
                 iam = {this.state.iam}
                 latCliente = {this.state.latCliente}
                 lngCliente = {this.state.lngCliente}
+                actualizarUbicacion = {this.actualizarUbicacion}
+                setUbicacionCliente = {this.setUbicacionCliente}
                 />
             );
         }

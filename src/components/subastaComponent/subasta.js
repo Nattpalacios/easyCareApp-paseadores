@@ -176,7 +176,11 @@ export default class Subasta extends Component{
                 volver();
             }
         });
-        console.log(this.state.iam);
+        this.props.iam.ubicacion = {
+            latitud : this.props.lat,
+            longitud : this.props.lng
+        }
+        console.log(this.props.iam);
         this.state.stomp.send("/app/subasta."+this.props.subasta.id,{},JSON.stringify(this.props.iam));
     }
 
@@ -213,6 +217,7 @@ export default class Subasta extends Component{
                                 <li className="list-group-item">Cliente: {this.props.subasta.creador.nombre}</li>
                                 <li className="list-group-item">El cliente {(this.props.subasta.permitirMasMascotas) ? (" Permite pasear mas mascotas") : (" No permite pasear otras mascotas")}</li>
                                 <li className="list-group-item">Telefono del cliente: {this.props.subasta.creador.telefono}</li>
+                                <li className="list-group-item">Duración del paseo: {this.props.subasta.paseo.duracion} minutos</li>
                             </ul>
                         </div>
                     </div>
