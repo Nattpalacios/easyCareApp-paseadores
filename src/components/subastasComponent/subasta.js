@@ -60,7 +60,7 @@ export default class Subastas extends Component{
     setUbicacionCliente = function(lat, lng, subasta){
         // var li = this.state.paseosEnVivo;
         this.state.paseosEnVivo.forEach((pas) =>{
-            if(pas.subasta.id === subasta.id){
+            if(pas.subasta.id === subasta.id && (pas.latCliente!==lat || pas.lngCliente !==lng)){
                 pas.latCliente = lat;
                 pas.lngCliente = lng;
             }

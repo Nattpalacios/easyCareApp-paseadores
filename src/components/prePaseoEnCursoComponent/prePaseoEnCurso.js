@@ -38,7 +38,7 @@ export default class PrePaseoEnCurso extends Component{
 
     actualizarUbicacionCliente = function(lat, lng, subasta){
         if(this.props.latCliente !== lat || this.props.lngCliente !== lng){
-            this.props.setUbicacionCliente(lat, lng, subasta);
+            // this.props.setUbicacionCliente(lat, lng, subasta);
         }
     }
 
