@@ -14,8 +14,6 @@ export default class Subasta extends Component{
     constructor(props){
         super(props);
         this.state = {
-            socket : null,
-            stomp : null,
             paseadores : [],
             ofertas : [],
             oferta : 0,
@@ -129,10 +127,7 @@ export default class Subasta extends Component{
         });
     }
 
-    conectar = function(ws){
-        this.setState({
-            stomp : ws
-        });
+    conectar = function(){
         var volver = this.volverSubastas;
         var agregarP = this.agregarPaseador;
         var elim = this.eliminarPaseador;
@@ -140,7 +135,7 @@ export default class Subasta extends Component{
         var agof = this.agregarOferta;
         var cambiarFlag = this.props.setFlag;
         var slcaseador = this.props.setLocationCliente;
-        this.state.stomp.subscribe('/topic/subasta.'+this.props.subasta.id, function(eventbody){
+        this.props.stomp.subscribe('/topic/subasta.'+this.props.subasta.id, function(eventbody){
             console.log(eventbody)
             var object = JSON.parse(eventbody.body);
             console.log(yo.correo + " " + object.correo);
@@ -151,20 +146,20 @@ export default class Subasta extends Component{
         });
         this.traerPaseadores();
         this.traerOfertas();
-        this.state.stomp.subscribe('/topic/cerrar/subasta.'+this.props.subasta.id,function(eventbody){
+        this.props.stomp.subscribe('/topic/cerrar/subasta.'+this.props.subasta.id,function(eventbody){
             var object = JSON.parse(eventbody.body);
             console.log(object);
             volver();
         });
-        this.state.stomp.subscribe("/topic/eliminarpaseador/subasta."+this.props.subasta.id, function(eventbody){
+        this.props.stomp.subscribe("/topic/eliminarpaseador/subasta."+this.props.subasta.id, function(eventbody){
             var object = JSON.parse(eventbody.body);
             elim(object);
         });
-        this.state.stomp.subscribe("/topic/agregaroferta/subasta."+this.props.subasta.id,function(eventbody){
+        this.props.stomp.subscribe("/topic/agregaroferta/subasta."+this.props.subasta.id,function(eventbody){
             var object = JSON.parse(eventbody.body);
             agof(object);
         });
-        this.state.stomp.subscribe("/topic/decisionSubasta/"+this.props.iam.correo, function(eventbody){
+        this.props.stomp.subscribe("/topic/decisionSubasta/"+this.props.iam.correo, function(eventbody){
             var object = JSON.parse(eventbody.body);
             console.log(eventbody);
             if(object.seleccionado){
@@ -181,7 +176,7 @@ export default class Subasta extends Component{
             longitud : this.props.lng
         }
         console.log(this.props.iam);
-        this.state.stomp.send("/app/subasta."+this.props.subasta.id,{},JSON.stringify(this.props.iam));
+        this.props.stomp.send("/app/subasta."+this.props.subasta.id,{},JSON.stringify(this.props.iam));
     }
 
     ofertar = function(){
@@ -190,16 +185,12 @@ export default class Subasta extends Component{
             ofertor : this.props.iam,
             subasta : this.props.subasta
         };
-        this.state.stomp.send("/app/agregaroferta/subasta."+this.props.subasta.id,{},JSON.stringify(datos));
+        this.props.stomp.send("/app/agregaroferta/subasta."+this.props.subasta.id,{},JSON.stringify(datos));
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.traerOfertas();
-        var webSocket = new WebSocket();
-        this.setState({
-            socket : webSocket
-        });
-        webSocket.connectAndSubscribe(this.conectar);
+        this.conectar();
     }
 
 

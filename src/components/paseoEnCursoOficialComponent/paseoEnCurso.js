@@ -25,7 +25,7 @@ export default class PaseoEnCurso extends Component{
 
 
 
-    componentWillMount(){
+    componentDidMount(){
         var li = this.state.paseosListos;
         var i = 0;
         console.log(this.props.paseosEnVivo);

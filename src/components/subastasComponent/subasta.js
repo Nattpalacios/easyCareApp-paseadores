@@ -232,7 +232,7 @@ export default class Subastas extends Component{
 
 
 
-    componentWillMount(){
+    componentDidMount(){
         this.pedirLocation();
         this.quienSoy();
         this.llamarSubastas();
@@ -254,6 +254,7 @@ export default class Subastas extends Component{
             setLocationCliente = {this.setLocationCliente}
             lat = {this.state.miLat}
             lng = {this.state.miLng}
+            stomp = {this.state.stomp}
             
              />;
         }else if(this.state.flag === 'prePaseoEnCurso'){
@@ -269,6 +270,7 @@ export default class Subastas extends Component{
                 setUbicacionCliente = {this.setUbicacionCliente}
                 setFlag = {this.setFlag}
                 agregarPaseoEnVivo = {this.agregarPaseoEnVivo}
+                stomp = {this.state.stomp}
                 />
             );
         }else if(this.state.flag === 'paseoEnCurso'){
@@ -281,6 +283,7 @@ export default class Subastas extends Component{
                 lng = {this.state.miLng}
                 paseosEnVivo = {this.state.paseosEnVivo}
                 setFlag = {this.setFlag}
+                stomp = {this.state.stomp}
                 />
                 );
         }

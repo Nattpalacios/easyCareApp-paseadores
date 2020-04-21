@@ -33,7 +33,7 @@ export default class PrePaseoEnCurso extends Component{
         console.log("actualizando ubicacion");
         this.props.actualizarUbicacion();
         console.log(this.props.subasta);
-        this.state.stomp.send("/app/actualizarUbicacionPaseador/"+this.props.lat+"/"+this.props.lng,{},JSON.stringify(this.props.subasta));
+        this.props.stomp.send("/app/actualizarUbicacionPaseador/"+this.props.lat+"/"+this.props.lng,{},JSON.stringify(this.props.subasta));
     }
 
     actualizarUbicacionCliente = function(lat, lng){
@@ -42,12 +42,9 @@ export default class PrePaseoEnCurso extends Component{
         }
     }
 
-    conectar = function(ws){
-        this.setState({
-            stomp : ws
-        });
+    conectar = function(){
         var accli = this.actualizarUbicacionCliente;
-        this.state.stomp.subscribe("/topic/actualizarUbicacion."+this.props.iam.correo,function(eventbody){
+        this.props.stomp.subscribe("/topic/actualizarUbicacion."+this.props.iam.correo,function(eventbody){
             var object = JSON.parse(eventbody.body);
             console.log(object);
             accli(object.lat, object.lng, object.subasta);
@@ -57,7 +54,7 @@ export default class PrePaseoEnCurso extends Component{
     }
 
     cancelarPaseo = function(){
-        this.state.stomp.send("/app/cancelarPaseo",{}, JSON.stringify(this.props.subasta));
+        this.props.stomp.send("/app/cancelarPaseo",{}, JSON.stringify(this.props.subasta));
     }
 
     comenzarPaseo = function(){
@@ -71,9 +68,8 @@ export default class PrePaseoEnCurso extends Component{
     }
     
 
-    componentWillMount(){
-        var weSocket = new WebSocket();
-        weSocket.connectAndSubscribe(this.conectar);
+    componentDidMount(){
+        this.conectar();
     }
 
     render(){
