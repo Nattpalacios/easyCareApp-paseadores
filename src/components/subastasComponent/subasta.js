@@ -5,6 +5,7 @@ import RequestService from '../../services/requestService';
 
 import Subasta from '../subastaComponent/subasta';
 import PrePaseoEnCurso from '../prePaseoEnCursoComponent/prePaseoEnCurso';
+import PaseoEnCurso from '../paseoEnCursoOficialComponent/paseoEnCurso';
 
 import './subasta.css';
 
@@ -21,7 +22,9 @@ export default class Subastas extends Component{
             subastaSeleccionada : null,
             iam : null,
             latCliente : 0,
-            lngCliente : 0
+            lngCliente : 0,
+            paseoIniciado : false,
+            paseosEnVivo : []
         };
 
         this.volverMenu = this.volverMenu.bind(this);
@@ -41,9 +44,27 @@ export default class Subastas extends Component{
         this.setLocationCliente = this.setLocationCliente.bind(this);
         this.actualizarUbicacion = this.actualizarUbicacion.bind(this);
         this.setUbicacionCliente = this.setUbicacionCliente.bind(this);
+        this.irPaseosEnVivo = this.irPaseosEnVivo.bind(this);
+        this.agregarPaseoEnVivo = this.agregarPaseoEnVivo.bind(this);
     }
 
-    setUbicacionCliente = function(lat, lng){
+    agregarPaseoEnVivo = function(paseo){
+        var li = this.state.paseosEnVivo;
+        li.push(paseo);
+        this.setState({
+            paseoIniciado : true,
+            paseosEnVivo : li
+        });
+    }
+
+    setUbicacionCliente = function(lat, lng, subasta){
+        // var li = this.state.paseosEnVivo;
+        this.state.paseosEnVivo.foreach((pas) =>{
+            if(pas.subasta.id === subasta.id){
+                pas.latCliente = lat;
+                pas.lngCliente = lng;
+            }
+        });
         this.setState({
             latCliente : lat,
             lngCliente : lng
@@ -203,6 +224,12 @@ export default class Subastas extends Component{
 
     //FIN LOCALIZAR
 
+    irPaseosEnVivo = function(){
+        this.setState({
+            flag : 'paseoEnCurso'
+        });
+    }
+
 
 
     componentWillMount(){
@@ -240,13 +267,30 @@ export default class Subastas extends Component{
                 lngCliente = {this.state.lngCliente}
                 actualizarUbicacion = {this.actualizarUbicacion}
                 setUbicacionCliente = {this.setUbicacionCliente}
+                setFlag = {this.setFlag}
+                agregarPaseoEnVivo = {this.agregarPaseoEnVivo}
                 />
             );
+        }else if(this.state.flag === 'paseoEnCurso'){
+            return (
+            <PaseoEnCurso
+                subasta = {this.state.subastaSeleccionada}
+                latCliente = {this.state.latCliente}
+                lngCliente = {this.state.lngCliente}
+                lat = {this.state.miLat}
+                lng = {this.state.miLng}
+                paseosEnVivo = {this.state.paseosEnVivo}
+                setFlag = {this.setFlag}
+                />
+                );
         }
         return <React.Fragment>
             <hr/>
             <div className='container'>
             <button className='btn btn-info' onClick={this.volverMenu}> Volver al menú</button>
+            {(this.state.paseoIniciado) ? (
+                <button onClick = {this.irPaseosEnVivo} className="btn btn-primary">Ir a mis paseos en vivo</button>
+            ) : ('')}
             <table className="table table-hover">
                 <thead>
                 <tr>

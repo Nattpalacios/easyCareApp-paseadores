@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Mapa from '../mapaComponent/mapa';
 
+
 import { withScriptjs } from "react-google-maps";
 
 import WebSocket from '../../services/webSocket';
@@ -14,6 +15,7 @@ export default class PrePaseoEnCurso extends Component{
         super(props);
         this.state = {
             zoom : 8,
+            flag : 'prePaseo'
         };
         console.log(this.props);
 
@@ -21,6 +23,7 @@ export default class PrePaseoEnCurso extends Component{
         this.actualizarUbicacionCliente = this.actualizarUbicacionCliente.bind(this);
         this.conectar = this.conectar.bind(this);
         this.cancelarPaseo = this.cancelarPaseo.bind(this);
+        this.comenzarPaseo = this.comenzarPaseo.bind(this);
 
 
         
@@ -47,7 +50,7 @@ export default class PrePaseoEnCurso extends Component{
         this.state.stomp.subscribe("/topic/actualizarUbicacion."+this.props.iam.correo,function(eventbody){
             var object = JSON.parse(eventbody.body);
             console.log(object);
-            accli(object.lat, object.lng);
+            accli(object.lat, object.lng, object.subasta);
         });
         setInterval(this.actualizarUbicacion,1000);
 
@@ -55,6 +58,16 @@ export default class PrePaseoEnCurso extends Component{
 
     cancelarPaseo = function(){
         this.state.stomp.send("/app/cancelarPaseo",{}, JSON.stringify(this.props.subasta));
+    }
+
+    comenzarPaseo = function(){
+        var paseo = {
+            subasta : this.props.subasta,
+            latCliente : this.props.latCliente,
+            lngCliente : this.props.lngCliente
+        };
+        this.props.agregarPaseoEnVivo(paseo);
+        this.props.setFlag('paseoEnCurso');
     }
     
 
@@ -83,7 +96,7 @@ export default class PrePaseoEnCurso extends Component{
                     </div>
                     <div className='row'>
                         <div className='col-sm-6'>
-                            <button className='btn btn-success form-control'>Iniciar Paseo</button>
+                            <button onClick={this.comenzarPaseo} className='btn btn-success form-control'>Iniciar Paseo</button>
                         </div>
                         <div className='col-sm-6'>
                             <button onClick ={this.cancelarPaseo} className='btn btn-danger form-control'>Cancelar Paseo</button>
