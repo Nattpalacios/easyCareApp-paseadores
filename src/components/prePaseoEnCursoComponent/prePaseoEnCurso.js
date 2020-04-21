@@ -52,7 +52,7 @@ export default class PrePaseoEnCurso extends Component{
             console.log(object);
             accli(object.lat, object.lng, object.subasta);
         });
-        setInterval(this.actualizarUbicacion,1000);
+        setInterval(this.actualizarUbicacion,10000);
 
     }
 
