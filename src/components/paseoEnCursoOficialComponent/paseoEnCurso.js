@@ -12,7 +12,7 @@ export default class PaseoEnCurso extends Component{
         super(props);
         this.state = {
             paseosListos : [],
-            zoom : 8
+            zoom : 15
         }
         
         this.volverSubastas = this.volverSubastas.bind(this);
