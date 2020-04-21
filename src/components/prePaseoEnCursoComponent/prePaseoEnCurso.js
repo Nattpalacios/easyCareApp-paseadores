@@ -36,9 +36,9 @@ export default class PrePaseoEnCurso extends Component{
         this.props.stomp.send("/app/actualizarUbicacionPaseador/"+this.props.lat+"/"+this.props.lng,{},JSON.stringify(this.props.subasta));
     }
 
-    actualizarUbicacionCliente = function(lat, lng){
+    actualizarUbicacionCliente = function(lat, lng, subasta){
         if(this.props.latCliente !== lat || this.props.lngCliente !== lng){
-            this.props.setUbicacionCliente(lat, lng);
+            this.props.setUbicacionCliente(lat, lng, subasta);
         }
     }
 
