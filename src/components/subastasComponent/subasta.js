@@ -303,12 +303,17 @@ export default class Subastas extends Component{
                 <tbody>
                     {this.state.subastas.map((subasta,id)=>{
                         return(
-                            <tr onClick={() => this.seleccionarSubasta(subasta)} className="clickeable" key={id}>
-                                <td>{subasta.id}</td>
-                                <td>{subasta.creador.nombre}</td>
-                                <td>{subasta.numMascotas}</td>
-                                <td>{(subasta.permitirMasMascotas) ? ("Permitido") : ("No permitido")}</td>
-                            </tr>
+                            (this.state.paseoIniciado && !subasta.permitirMasMascotas) ? (
+                                ''
+                            ) : (
+                                <tr onClick={() => this.seleccionarSubasta(subasta)} className="clickeable" key={id}>
+                                    <td>{subasta.id}</td>
+                                    <td>{subasta.creador.nombre}</td>
+                                    <td>{subasta.numMascotas}</td>
+                                    <td>{(subasta.permitirMasMascotas) ? ("Permitido") : ("No permitido")}</td>
+                                </tr>
+                            )
+                            
                         );
                     })}
                 </tbody>
