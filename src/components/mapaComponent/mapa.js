@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import { withGoogleMap, GoogleMap, DirectionsRenderer, Marker } from 'react-google-maps';
-
+import { withGoogleMap, GoogleMap, DirectionsRenderer, Marker, Polyline } from 'react-google-maps';
+import { InfoWindow,} from 'google-maps-react';
 
 // 4.755410, -74.101669
 
@@ -56,13 +56,27 @@ export default class Mapa extends Component{
           />
 
           {this.props.markers.map((mark,i) => {
-            return(<Marker
-            key = {i}
-            position = {{lat :mark.lat , lng :mark.lng}}
-            label = {mark.label}
-            
-            />);
+            return(
+                <React.Fragment key = {i}>
+
+                    
+                    <Marker
+                        position = {{lat :mark.lat , lng :mark.lng}}
+                        label = {mark.label}
+                        
+                    />
+                    
+                </React.Fragment>
+            );
           })}
+
+            {(this.props.polyLines !== undefined) ? (
+              <Polyline
+              path={this.props.polyLines}
+              options={{ strokeColor: "#FF0000 " }} />
+          ) : (
+            ''
+          )}
           
         </GoogleMap>
       ));

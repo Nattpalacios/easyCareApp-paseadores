@@ -46,6 +46,13 @@ export default class Subastas extends Component{
         this.setUbicacionCliente = this.setUbicacionCliente.bind(this);
         this.irPaseosEnVivo = this.irPaseosEnVivo.bind(this);
         this.agregarPaseoEnVivo = this.agregarPaseoEnVivo.bind(this);
+        this.setPaseosEnVivo = this.setPaseosEnVivo.bind(this);
+    }
+
+    setPaseosEnVivo = function(pa){
+        this.setState({
+            paseosEnVivo : pa
+        });
     }
 
     agregarPaseoEnVivo = function(paseo){
@@ -255,6 +262,7 @@ export default class Subastas extends Component{
             lat = {this.state.miLat}
             lng = {this.state.miLng}
             stomp = {this.state.stomp}
+            paseoIniciado = {this.state.paseoIniciado}
             
              />;
         }else if(this.state.flag === 'prePaseoEnCurso'){
@@ -282,6 +290,7 @@ export default class Subastas extends Component{
                 lat = {this.state.miLat}
                 lng = {this.state.miLng}
                 paseosEnVivo = {this.state.paseosEnVivo}
+                setPaseosEnVivo = {this.setPaseosEnVivo}
                 setFlag = {this.setFlag}
                 stomp = {this.state.stomp}
                 />
@@ -291,7 +300,7 @@ export default class Subastas extends Component{
             <hr/>
             <div className='container'>
             <button className='btn btn-info' onClick={this.volverMenu}> Volver al menú</button>
-            {(this.state.paseoIniciado) ? (
+            {(this.state.paseoIniciado && this.state.paseosEnVivo.length!==0) ? (
                 <button onClick = {this.irPaseosEnVivo} className="btn btn-primary">Ir a mis paseos en vivo</button>
             ) : ('')}
             <table className="table table-hover">

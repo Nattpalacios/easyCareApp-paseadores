@@ -37,8 +37,11 @@ export default class Subasta extends Component{
 
 
     volverSubastas = function(){
-        this.state.stomp.send("/app/salirsubasta."+this.props.subasta.id,{},JSON.stringify(this.props.iam));
-        this.props.volver();        
+        if(this.props.paseoIniciado){
+            this.state.stomp.send("/app/salirsubasta."+this.props.subasta.id,{},JSON.stringify(this.props.iam));
+        }
+        this.props.volver(); 
+               
     }
     //TRAER PASEADORES
     traerPaseadores = function(){

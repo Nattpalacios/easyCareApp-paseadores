@@ -65,11 +65,15 @@ export default class PrePaseoEnCurso extends Component{
         };
         this.props.agregarPaseoEnVivo(paseo);
         this.props.setFlag('paseoEnCurso');
+        this.props.stomp.send("/app/comenzarPaseoVivo",{}, JSON.stringify(this.props.subasta));
     }
     
 
     componentDidMount(){
         this.conectar();
+        window.onbeforeunload = function() {
+            return '¿Seguro que quiere salirse del paseo?';
+        };
     }
 
     render(){
