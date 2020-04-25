@@ -31,9 +31,23 @@ export default class PrePaseoEnCurso extends Component{
 
     actualizarUbicacion = function(){
         console.log("actualizando ubicacion");
-        this.props.actualizarUbicacion();
-        console.log(this.props.subasta);
-        this.props.stomp.send("/app/actualizarUbicacionPaseador/"+this.props.lat+"/"+this.props.lng,{},JSON.stringify(this.props.subasta));
+        var change = this.props.actualizarUbicacion;
+        var st = this.props.stomp;
+        var subasta = this.props.subasta;
+        var lat = this.props.lat;
+        var lng = this.props.lng;
+        navigator.geolocation.watchPosition((position) => {
+            console.log(position);
+            change(position.coords.latitude, position.coords.longitude);
+            st.send("/app/actualizarUbicacionPaseador/"+lat+"/"+lng,{},JSON.stringify(subasta));
+        },
+        (error) => {
+            alert("Se necesitan permisos de Location.");
+            console.error(error);
+            console.log("paila");
+        });
+        // console.log(this.props.subasta);
+        // this.props.stomp.send("/app/actualizarUbicacionPaseador/"+this.props.lat+"/"+this.props.lng,{},JSON.stringify(this.props.subasta));
     }
 
     actualizarUbicacionCliente = function(lat, lng, subasta){
@@ -49,7 +63,8 @@ export default class PrePaseoEnCurso extends Component{
             console.log(object);
             accli(object.lat, object.lng, object.subasta);
         });
-        setInterval(this.actualizarUbicacion,10000);
+        // setInterval(this.actualizarUbicacion,10000);
+        this.actualizarUbicacion();
 
     }
 
