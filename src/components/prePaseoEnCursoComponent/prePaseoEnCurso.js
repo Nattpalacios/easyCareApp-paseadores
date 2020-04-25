@@ -39,7 +39,7 @@ export default class PrePaseoEnCurso extends Component{
         navigator.geolocation.watchPosition((position) => {
             console.log(position);
             change(position.coords.latitude, position.coords.longitude);
-            st.send("/app/actualizarUbicacionPaseador/"+lat+"/"+lng,{},JSON.stringify(subasta));
+            st.send("/app/actualizarUbicacionPaseador/"+position.coords.latitude+"/"+position.coords.longitude,{},JSON.stringify(subasta));
         },
         (error) => {
             alert("Se necesitan permisos de Location.");
