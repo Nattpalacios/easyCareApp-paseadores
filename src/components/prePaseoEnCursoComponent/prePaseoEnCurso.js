@@ -38,8 +38,11 @@ export default class PrePaseoEnCurso extends Component{
         var lng = this.props.lng;
         navigator.geolocation.watchPosition((position) => {
             console.log(position);
-            change(position.coords.latitude, position.coords.longitude);
-            st.send("/app/actualizarUbicacionPaseador/"+position.coords.latitude+"/"+position.coords.longitude,{},JSON.stringify(subasta));
+            if(lat!==position.coords.latitude || lng !== position.coords.longitude){
+                change(position.coords.latitude, position.coords.longitude);
+                st.send("/app/actualizarUbicacionPaseador/"+position.coords.latitude+"/"+position.coords.longitude,{},JSON.stringify(subasta));
+            }
+            
         },
         (error) => {
             alert("Se necesitan permisos de Location.");
@@ -92,6 +95,7 @@ export default class PrePaseoEnCurso extends Component{
     }
 
     render(){
+        console.log(this.props.lat + " " + this.props.lng);
         return(
             <React.Fragment>
                 <div className='container-fluid'>

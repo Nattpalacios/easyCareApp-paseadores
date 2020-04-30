@@ -16,14 +16,18 @@ export default class Mapa extends Component{
     
   }
 
-  componentDidMount() {
+  actualizar(){
+    console.log("*************************************");
+    console.log(this.props.ruta.origin.lat + " " + this.props.ruta.origin.lng);
+    console.log(this.props.ruta.destino.lat + " " + this.props.ruta.destino.lng);
     if(this.props.ruta !== undefined){
       console.log(this.props.ruta);
       const directionsService = new window.google.maps.DirectionsService();
   
       const origin = { lat: this.props.ruta.origin.lat, lng: this.props.ruta.origin.lng };
       const destination = { lat: this.props.ruta.destino.lat, lng: this.props.ruta.destino.lng };
-  
+      console.log(origin);
+      console.log(destination);
       directionsService.route(
         {
           origin: origin,
@@ -41,11 +45,45 @@ export default class Mapa extends Component{
         }
       );
     }
+  }
+
+  componentDidMount() {
+    setInterval(()=>{
+    console.log("*************************************");
+    if(this.props.ruta !== undefined){
+      console.log(this.props.ruta);
+      const directionsService = new window.google.maps.DirectionsService();
+  
+      const origin = { lat: this.props.ruta.origin.lat, lng: this.props.ruta.origin.lng };
+      const destination = { lat: this.props.ruta.destino.lat, lng: this.props.ruta.destino.lng };
+      console.log(origin);
+      console.log(destination);
+      directionsService.route(
+        {
+          origin: origin,
+          destination: destination,
+          travelMode: window.google.maps.TravelMode.DRIVING
+        },
+        (result, status) => {
+          if (status === window.google.maps.DirectionsStatus.OK) {
+            this.setState({
+              directions: result
+            });
+          } else {
+            console.error(`error fetching directions ${result}`);
+          }
+        }
+      );
+    }
+    },10000);
     
   }
 
 
     render(){
+      console.log("render ///////////////////////////////////////////////");
+
+
       const GoogleMapExample = withGoogleMap(props => (
         <GoogleMap
           defaultCenter={{ lat: this.props.center.lat, lng: this.props.center.lng }}

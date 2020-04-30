@@ -41,7 +41,6 @@ export default class Subastas extends Component{
         this.quienSoyIncorrecto = this.quienSoyIncorrecto.bind(this);
         this.setFlag = this.setFlag.bind(this);
         this.pedirLocation = this.pedirLocation.bind(this);
-        this.setLocationCliente = this.setLocationCliente.bind(this);
         this.actualizarUbicacion = this.actualizarUbicacion.bind(this);
         this.setUbicacionCliente = this.setUbicacionCliente.bind(this);
         this.irPaseosEnVivo = this.irPaseosEnVivo.bind(this);
@@ -79,17 +78,17 @@ export default class Subastas extends Component{
     }
 
     actualizarUbicacion = function(newLat, newLng){
-        this.setState({
-            miLat : newLat,
-            miLng : newLng
-        });
-    }
-
-    setLocationCliente = function(lat, lng){
-        this.setState({
-            latCliente : lat,
-            lngCliente : lng
-        });
+        console.log(newLat);
+        console.log(newLng);
+        if(this.state.miLat !== newLat || this.state.miLng !== newLng){
+            console.log(newLat);
+            console.log(newLng);
+            this.setState({
+                miLat : newLat,
+                miLng : newLng
+            });
+        }
+        
     }
 
     setFlag(fl){
@@ -244,7 +243,7 @@ export default class Subastas extends Component{
             volver = {this.goBackSubastas}
             iam = {this.state.iam}
             setFlag = {this.setFlag}
-            setLocationCliente = {this.setLocationCliente}
+            setLocationCliente = {this.setUbicacionCliente}
             lat = {this.state.miLat}
             lng = {this.state.miLng}
             stomp = {this.state.stomp}

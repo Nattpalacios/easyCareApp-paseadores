@@ -138,6 +138,7 @@ export default class Subasta extends Component{
         var agof = this.agregarOferta;
         var cambiarFlag = this.props.setFlag;
         var slcaseador = this.props.setLocationCliente;
+        var sub = this.props.subasta;
         this.props.stomp.subscribe('/topic/subasta.'+this.props.subasta.id, function(eventbody){
             console.log(eventbody)
             var object = JSON.parse(eventbody.body);
@@ -149,25 +150,25 @@ export default class Subasta extends Component{
         });
         this.traerPaseadores();
         this.traerOfertas();
-        this.props.stomp.subscribe('/topic/cerrar/subasta.'+this.props.subasta.id,function(eventbody){
+        this.props.stomp.subscribe('/topic/cerrar/subasta.'+this.props.subasta.id, async function(eventbody){
             var object = JSON.parse(eventbody.body);
             console.log(object);
             volver();
         });
-        this.props.stomp.subscribe("/topic/eliminarpaseador/subasta."+this.props.subasta.id, function(eventbody){
+        this.props.stomp.subscribe("/topic/eliminarpaseador/subasta."+this.props.subasta.id, async function(eventbody){
             var object = JSON.parse(eventbody.body);
             elim(object);
         });
-        this.props.stomp.subscribe("/topic/agregaroferta/subasta."+this.props.subasta.id,function(eventbody){
+        this.props.stomp.subscribe("/topic/agregaroferta/subasta."+this.props.subasta.id,async function(eventbody){
             var object = JSON.parse(eventbody.body);
             agof(object);
         });
-        this.props.stomp.subscribe("/topic/decisionSubasta/"+this.props.iam.correo, function(eventbody){
+        this.props.stomp.subscribe("/topic/decisionSubasta/"+this.props.iam.correo,async function(eventbody){
             var object = JSON.parse(eventbody.body);
             console.log(eventbody);
             if(object.seleccionado){
                 console.log("me seleccionaron");
-                slcaseador(object.lat, object.lng)
+                slcaseador(object.lat, object.lng, sub)
                 cambiarFlag("prePaseoEnCurso");
             }else{
                 console.log("no me seleccionaron");
