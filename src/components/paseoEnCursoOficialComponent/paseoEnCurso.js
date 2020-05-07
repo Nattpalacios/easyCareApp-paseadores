@@ -75,9 +75,36 @@ export default class PaseoEnCurso extends Component{
     }
     //FIN EVENTOS MAPA
 
-    finalizarPaseo = function(pa){
-        if(pa.subasta.paseo.duracion <= 0){
+    finalizarPaseo = function(pas){
+        if(pas.subasta.paseo.duracion <= 0){
             console.log("finalizando Paseo.");
+            this.props.stomp.send("/app/finalizarPaseo",{},JSON.stringify(this.props.subasta));
+            var pa = this.props.paseosEnVivo;
+            console.log(pas);
+            console.log(this.props.paseosEnVivo);
+            console.log(this.state.paseosListos);
+            for(var i=0; i<pa.length; i++){
+                console.log(pa[i]);
+                if(pas.subasta.id === pa[i].subasta.id){
+                    pa.splice(i,1);
+                }
+            }
+            this.props.setPaseosEnVivo(pa);
+            var paMap = this.state.paseosListos;
+            for(var i=0; i < paMap.length; i++){
+                console.log(paMap[i]);
+                if(paMap[i].label === pas.subasta.creador.nombre){
+                    paMap.splice(i,1);
+                }
+            }
+            this.setState({
+                paseosListos : paMap
+            });
+            console.log(paMap);
+            console.log(pa);
+            console.log(this.props.paseosEnVivo);
+            console.log(this.state.paseosListos);
+            this.props.volver();
         }
     }
 

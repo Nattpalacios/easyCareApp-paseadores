@@ -181,10 +181,23 @@ export default class Subastas extends Component{
     //FIN QUIEN SOY
 
     seleccionarSubasta = function(subasta){
+        var request = new RequestService();
         this.setState({
-            subastaSeleccionada : subasta,
-            flag : 'subasta'
+            subastaSeleccionada : subasta
         });
+        request.request(this.seleccionarCorrecto.bind(this), this.seleccionarIncorrecto.bind(this), 'GET','/paseadores/whoami');
+    }
+
+    seleccionarCorrecto = function(data){
+        console.log(data);
+        this.setState({
+            flag : 'subasta',
+            iam : data
+        });
+    }
+
+    seleccionarIncorrecto = function(error){
+        console.log(error);
     }
 
     goBackSubastas(){
@@ -278,6 +291,7 @@ export default class Subastas extends Component{
                 setPaseosEnVivo = {this.setPaseosEnVivo}
                 setFlag = {this.setFlag}
                 stomp = {this.state.stomp}
+                volver = {this.goBackSubastas}
                 />
                 );
         }
