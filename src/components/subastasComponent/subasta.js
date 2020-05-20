@@ -127,14 +127,15 @@ export default class Subastas extends Component{
         this.setState({
             stomp : ws
         });
+        console.log(ws + "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         var callback = this.agregarSubasta;
         var elim = this.eliminarSubasta;
-        this.state.stomp.subscribe("/topic/subastas", function(eventbody){
+        ws.subscribe("/topic/subastas", function(eventbody){
             console.log(eventbody);
             var object = JSON.parse(eventbody.body);
             callback(object);
         });
-        this.state.stomp.subscribe("/topic/subastas/cerrar", function(eventbody){
+        ws.subscribe("/topic/subastas/cerrar", function(eventbody){
             var object = JSON.parse(eventbody.body);
             elim(object);
         });
