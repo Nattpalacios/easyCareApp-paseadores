@@ -59,7 +59,8 @@ export default class RankingPaseadores extends Component{
     //Fin verificar login
 
     volverMenu = function(){
-        this.props.setFlag('bienvenida');
+        // this.props.setFlag('bienvenida');
+        window.location = "/";
     }
 
     //PEDIR PASEADORES
