@@ -3,16 +3,18 @@ import React, {Component} from 'react';
 import '../../estilos/estiloBoton.css';
 import './bienvenida.css';
 import LoginService from '../../services/loginService';
+import RankingPaseadores from '../rankingPaseadores/rankingPaseadores';
 
 export default class Bienvenida extends Component{
 
     constructor(props){
         super(props);
         this.state = {
-            claseBoton : "oculto"
+            claseBoton : "oculto",
+            flag : ''
         }
         this.paseadoresClick = this.paseadoresClick.bind(this);
-
+        this.setFlag = this.setFlag.bind(this);
         this.verificarAutenticacion = this.verificarAutenticacion.bind(this);
         this.validacionCorrecta = this.validacionCorrecta.bind(this);
         this.validacionIncorrecta = this.validacionIncorrecta.bind(this);
@@ -22,6 +24,13 @@ export default class Bienvenida extends Component{
         this.verificarAutenticacion();
     }
 
+    setFlag = function(f){
+        this.setState({
+            flag : f
+        });
+    }
+
+    
     //Verificar login
 
     hadleChange(event){
@@ -55,6 +64,9 @@ export default class Bienvenida extends Component{
     }
 
     render(){
+        if(this.state.flag === 'ranking'){
+            return <RankingPaseadores setFlag={this.setFlag} />
+        }
         return(
             <div className="container">
                 <div className="row">
@@ -71,7 +83,7 @@ export default class Bienvenida extends Component{
                     <div className="col-md-12 col-lg-4">
                         <img alt="ranking" src="/img/ranking.jpg" className="img img-responsive col-lg-12"/>
                         <div className="estiloBoton">
-                            <button onClick = {this.paseadoresClick} className="btn btn-outline btn-light btn-block">Ranking Paseadores</button>
+                        <button onClick = {() => this.setFlag("ranking")} className="btn btn-outline btn-light btn-block">Ranking Paseadores</button>
                         </div>
                     </div>
                 </div>
