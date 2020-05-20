@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import EstrellasRanking from '../estrellasRankingComponent/estrellasRanking';
+
 import RequestService from '../../services/requestService';
 import './perfilPaseador.css';
 
@@ -79,7 +81,7 @@ export default class PerfilPaseador extends Component{
                                 <a>{this.state.paseador.tipoDocumento}</a><br/>
                                 <a>{this.state.paseador.documento}</a><br/>
                                 <a>{this.state.paseador.telefono}</a><br/>
-                                <a>{this.state.paseador.calificacion}</a>
+                                <EstrellasRanking soloLectura={true} puntaje={this.state.paseador.calificacion}/>
                             </div>
                         </div>
                     </div>
